@@ -1,0 +1,51 @@
+name: Run LEGEND Workflow
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 * * * *'  # Runs at the top of every hour
+
+jobs:
+  run_LEGEND_workflow:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-python-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-
+
+      - name: Set up LEGEND binaries
+        run: |
+          chmod +x *
+          chmod +x LEGEND
+          
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install required packages
+        run: |
+          pip install pymongo python-telegram-bot pyTelegramBotAPI certifi
+
+      - name: Run LEGEND.py
+        run: python3 LEGEND.py
+
+      - name: Run Tests
+        run: |
+          pytest tests/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: LEGEND-artifacts
+          path: path/to/generated/files
