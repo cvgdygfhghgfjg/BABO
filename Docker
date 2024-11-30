@@ -1,0 +1,16 @@
+# Use an appropriate base image
+FROM ubuntu:latest
+
+# Install necessary tools (for example, UFW and net-tools)
+RUN apt-get update && \
+    apt-get install -y ufw net-tools iputils-ping
+
+# Allow setting capabilities to allow raw socket
+RUN apt-get install -y iproute2
+
+# Make sure UFW is installed and set up
+RUN apt-get install -y ufw && \
+    ufw allow 22  # Example to allow SSH, adjust for your needs
+
+# Add any additional setup as needed
+# ...
