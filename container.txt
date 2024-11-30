@@ -1,5 +1,0 @@
-# Rebuild the container
-docker-compose build
-
-# Start the container
-docker-compose up
