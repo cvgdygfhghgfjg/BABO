@@ -1,0 +1,5 @@
+flask
+aiogram
+pymongo
+telebot
+python-telegram-bot
