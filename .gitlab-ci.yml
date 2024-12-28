@@ -1,0 +1,27 @@
+image: python:3.10  # Use the Python 3.10 Docker image for the pipeline
+
+variables:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_CACHE_DIR: "1"
+
+stages:
+  - deploy
+
+before_script:
+  # Create and activate a virtual environment
+  - python -m venv venv
+  - source venv/bin/activate
+  # Upgrade pip to the latest version
+  - pip install --upgrade pip
+  # Install required dependencies
+  - pip install python-telegram-bot
+  # Make the binary executable (if present in the repo)
+  - chmod +x LEGEND || echo "Binary not found, skipping."
+
+deploy:
+  stage: deploy
+  script:
+    # Run the bot script (replace with your actual script name)
+    - python LEGEND.py
+  only:
+    - main  # Run this pipeline only for changes on the main branch
